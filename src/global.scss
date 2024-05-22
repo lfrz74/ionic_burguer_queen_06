@@ -16,7 +16,7 @@
 @import "@ionic/angular/css/normalize.css";
 @import "@ionic/angular/css/structure.css";
 @import "@ionic/angular/css/typography.css";
-@import '@ionic/angular/css/display.css';
+@import "@ionic/angular/css/display.css";
 
 /* Optional CSS utils that can be commented out */
 @import "@ionic/angular/css/padding.css";
@@ -26,5 +26,23 @@
 @import "@ionic/angular/css/flex-utils.css";
 
 ion-toolbar {
-  --background: #2764A5;
+  --background: #2764a5;
+}
+
+ion-card.list ion-card-header {
+  min-height: 80px;
+}
+
+ion-card.list ion-img {
+  width: 150px;
+  min-height: 150px;
+}
+
+ion-card.list ion-card-title {
+  font-size: 16px;
+}
+
+#content {
+  margin-top: 56px;
+  margin-bottom: 56px;
 }

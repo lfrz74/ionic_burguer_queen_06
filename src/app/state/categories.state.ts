@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import { State, Action, StateContext } from '@ngxs/store';
+import { State, Action, StateContext, Selector } from '@ngxs/store';
 
-import { GetCategories } from './categories.actions';
 import { Category } from '../models/category';
+import { GetCategories } from './categories.actions';
+import { CategoriesService } from './categories.service';
 
 export class CategoriesStateModel {
   categories: Category[];
@@ -18,6 +19,18 @@ const defaults = {
 })
 @Injectable()
 export class CategoriesState {
+  @Selector()
+  static categories(state: CategoriesStateModel) {
+    return state.categories;
+  }
+
+  constructor(private categoriesSrv: CategoriesService) {}
+
   @Action(GetCategories)
-  add({ getState, setState }: StateContext<CategoriesStateModel>) {}
+  async getCategories({ setState }: StateContext<CategoriesStateModel>) {
+    const categories = await this.categoriesSrv.getCategories();
+    setState({
+      categories,
+    });
+  }
 }

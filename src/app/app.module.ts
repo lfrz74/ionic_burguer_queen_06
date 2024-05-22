@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
-import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
+import { IonicModule, IonicRouteStrategy, NavParams } from '@ionic/angular';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
@@ -35,7 +35,10 @@ export function HttpLoaderFactory(http: HttpClient) {
     ToolbarComponent,
     FooterComponent,
   ],
-  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
+  providers: [
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+    NavParams,
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
