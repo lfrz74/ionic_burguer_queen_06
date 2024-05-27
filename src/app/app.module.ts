@@ -11,7 +11,8 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { ToolbarComponent } from './shared/toolbar/toolbar.component';
 import { FooterComponent } from './shared/footer/footer.component';
-import { CategoriesState } from './state/categories.state';
+import { CategoriesState } from './state/categories/categories.state';
+import { ProductsState } from './state/products/products.state';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -31,7 +32,7 @@ export function HttpLoaderFactory(http: HttpClient) {
         deps: [HttpClient],
       },
     }),
-    NgxsModule.forRoot([CategoriesState]),
+    NgxsModule.forRoot([CategoriesState, ProductsState]),
     ToolbarComponent,
     FooterComponent,
   ],

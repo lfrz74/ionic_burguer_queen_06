@@ -4,8 +4,8 @@ import { TranslateService } from '@ngx-translate/core';
 import { Store } from '@ngxs/store';
 
 import { Category } from '../../models/category';
-import { GetCategories } from '../../state/categories.actions';
-import { CategoriesState } from '../../state/categories.state';
+import { GetCategories } from '../../state/categories/categories.actions';
+import { CategoriesState } from '../../state/categories/categories.state';
 
 @Component({
   selector: 'app-categories',

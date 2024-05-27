@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { State, Action, StateContext, Selector } from '@ngxs/store';
 
-import { Category } from '../models/category';
+import { Category } from '../../models/category';
 import { GetCategories } from './categories.actions';
 import { CategoriesService } from './categories.service';
 

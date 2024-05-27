@@ -1,27 +1,26 @@
 import { Injectable } from '@angular/core';
 import { CapacitorHttp, HttpResponse } from '@capacitor/core';
-import { Category } from '../models/category';
+import { Product } from 'src/app/models/product';
+
 import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
-export class CategoriesService {
-  //categoryEmpty: Category[];
-
+export class ProductsService {
   constructor() {}
 
-  async getCategories(): Promise<Category[]> {
+  async getProductsByCategory(idCategory: string): Promise<Product[]> {
     const response = await CapacitorHttp.get({
-      url: environment.urlApi + 'categories',
-      params: {}, // si no usas igual dejar vacio por tema de Android dice v
+      url: `${environment.urlApi}products/category/${idCategory}`,
+      params: {},
       headers: {
-        'Content-type': 'application/json',
+        'Content-Type': 'application/json',
       },
     })
       .then(async (response: HttpResponse) => {
         if (response.status == 200) {
-          const data = response.data as Category[];
+          const data = response.data as Product[];
           return data;
         }
         return [];
