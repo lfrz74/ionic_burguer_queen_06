@@ -49,8 +49,15 @@ export class ProductsState {
   }
 
   @Action(GetProductById)
-  getProductById(
+  async getProductById(
     { getState, setState }: StateContext<ProductsStateModel>,
     { payload }: GetProductById
-  ) {}
+  ) {
+    const product = await this.productService.getProductById(payload.id);
+    const state = getState();
+    setState({
+      ...state,
+      product,
+    });
+  }
 }

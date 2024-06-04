@@ -31,4 +31,27 @@ export class ProductsService {
       });
     return response;
   }
+
+  async getProductById(id: string): Promise<Product> {
+    const response = await CapacitorHttp.get({
+      url: `${environment.urlApi}products/${id}`,
+      params: {},
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then(async (response: HttpResponse) => {
+        if (response.status == 200) {
+          const data = response.data as Product;
+          return data;
+        }
+        return null;
+      })
+      .catch((err) => {
+        console.error(err);
+        return null;
+      });
+    return response;
+  }
+
 }
