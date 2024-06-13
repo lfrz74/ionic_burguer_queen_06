@@ -1,7 +1,53 @@
-<ion-header>
+<ion-menu side="end" content-id="content" menu-id="content">
+  <ion-header>
+    <ion-title>
+      <ion-item lines="none">
+        <ion-label>
+          {{ "label.menu" | translate }}
+        </ion-label>
+      </ion-item>
+    </ion-title>
+  </ion-header>
+
+  <ion-content>
+    <ion-list>
+      <ion-item>
+        <ion-icon slot="start" name="people-outline"></ion-icon>
+        <ion-label>
+          {{
+            (userOrderSrv.hasUser() ? "Log out" : "label.start.session")
+              | translate
+          }}
+        </ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-icon slot="start" name="cart-outline"></ion-icon>
+        <ion-label>{{ "label.see.order" | translate }}</ion-label>
+        <ion-badge slot="end">
+          {{ userOrderSrv.numProducts() }}
+        </ion-badge>
+      </ion-item>
+    </ion-list>
+  </ion-content>
+</ion-menu>
+
+<ion-header transluent>
   <ion-toolbar>
+    <ion-buttons slot="start" class="back-button">
+      <ion-icon
+        *ngIf="showBack"
+        name="arrow-back-outline"
+        color="light"
+        (click)="goBack()"
+      ></ion-icon>
+    </ion-buttons>
+
     <ion-title class="ion-text-center">
       <ion-img src="assets/img/logo_app.jpg" class="logo"></ion-img>
     </ion-title>
+
+    <ion-buttons slot="end">
+      <ion-menu-button color="light"></ion-menu-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>

@@ -13,6 +13,7 @@ import { ToolbarComponent } from './shared/toolbar/toolbar.component';
 import { FooterComponent } from './shared/footer/footer.component';
 import { CategoriesState } from './state/categories/categories.state';
 import { ProductsState } from './state/products/products.state';
+import { AuthState } from './state/auth/state/auth.state';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -32,7 +33,7 @@ export function HttpLoaderFactory(http: HttpClient) {
         deps: [HttpClient],
       },
     }),
-    NgxsModule.forRoot([CategoriesState, ProductsState]),
+    NgxsModule.forRoot([CategoriesState, ProductsState, AuthState]),
     ToolbarComponent,
     FooterComponent,
   ],

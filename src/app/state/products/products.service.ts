@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { CapacitorHttp, HttpResponse } from '@capacitor/core';
-import { Product } from 'src/app/models/product';
 
-import { environment } from 'src/environments/environment';
+import { Product } from '../../models/product';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root',

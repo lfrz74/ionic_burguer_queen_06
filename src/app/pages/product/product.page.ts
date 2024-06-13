@@ -1,10 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { NavController, NavParams } from '@ionic/angular';
 import { Store } from '@ngxs/store';
-import { Product } from 'src/app/models/product';
-import { ProductExtraOption } from 'src/app/models/product-extra-option';
-import { GetProductById } from 'src/app/state/products/products.actions';
-import { ProductsState } from 'src/app/state/products/products.state';
+
+import { Product } from '../../models/product';
+import { ProductExtraOption } from '../../models/product-extra-option';
+import { ToastService } from '../../services/toast.service';
+import { UserOrderService } from '../../services/user-order.service';
+import { GetProductById } from '../../state/products/products.actions';
+import { ProductsState } from '../../state/products/products.state';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-product',
@@ -18,7 +22,10 @@ export class ProductPage {
   constructor(
     private navController: NavController,
     private navParams: NavParams,
-    private store: Store
+    private store: Store,
+    private userOrderService: UserOrderService,
+    private toastService: ToastService,
+    private translateService: TranslateService
   ) {
     this.product = null;
   }
@@ -73,5 +80,17 @@ export class ProductPage {
           $event.target.complete();
         },
       });
+  }
+
+  addProductOrder() {
+    this.userOrderService.addProduct(this.product);
+    console.log(this.userOrderService.getProducts());
+    this.toastService.showToast(
+      'top',
+      this.translateService.instant('label.product.add.success'),
+      'success'
+    );
+
+    this.navController.navigateRoot('/');
   }
 }
