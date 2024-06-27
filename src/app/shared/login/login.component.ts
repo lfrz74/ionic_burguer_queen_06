@@ -9,6 +9,7 @@ import { User } from '../../models/user';
 import { Login } from '../../state/auth/auth.actions';
 import { AuthState } from '../../state/auth/auth.state';
 import { ToastService } from '../../services/toast.service';
+import { GetUser } from '../../state/users/users.actions';
 
 @Component({
   selector: 'app-login',
@@ -54,6 +55,26 @@ export class LoginComponent {
               this.translateSrv.instant('label.login.success'),
               'success'
             );
+            this.store
+              .dispatch(new GetUser({ email: this.user.email }))
+              .subscribe(
+                (res) => {
+                  if (res.users) {
+                    if (!res.users.success) {
+                      this.toastSrv.showToast(
+                        'top',
+                        res.users.errorApi.statusCode +
+                          ':\t' +
+                          res.users.errorApi.message,
+                        'danger'
+                      );
+                    }
+                  }
+                },
+                (err) => {
+                  console.log(err);
+                }
+              );
             this.doLogin.emit(true);
           } else {
             this.toastSrv.showToast(

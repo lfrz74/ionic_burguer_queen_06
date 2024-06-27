@@ -37,7 +37,7 @@ export class AuthState {
 
   @Action(Login)
   async login({ setState }: StateContext<AuthStateModel>, { payload }: Login) {
-    const token = await this.authService
+    await this.authService
       .login(payload.email, payload.password)
       .then(async (token: any) => {
         if (token.accessToken) {

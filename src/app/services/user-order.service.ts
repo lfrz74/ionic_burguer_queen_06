@@ -6,6 +6,7 @@ import { Order } from '../models/order';
 import { KEY_ORDER } from '../constants/constants';
 import { Product } from '../models/product';
 import { QuantityProduct } from '../models/quantity-product';
+import { User } from '../models/user';
 
 @Injectable({
   providedIn: 'root',
@@ -81,5 +82,11 @@ export class UserOrderService {
       );
     }
     return 0;
+  }
+
+  async saveUser(user: User) {
+    delete user.password; // nuevo v
+    this.order.user = user;
+    await this.saveOrder();
   }
 }
