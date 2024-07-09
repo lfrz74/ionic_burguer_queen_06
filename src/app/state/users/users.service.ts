@@ -39,4 +39,41 @@ export class UsersService {
       });
     return response;
   }
+
+  async createUser(user: User): Promise<boolean | ErrorApi> {
+    const response = await CapacitorHttp.post({
+      url: environment.urlApi + 'users',
+      params: { },
+      data: {
+        ...user
+      },
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then(async (response: HttpResponse) => {
+        const data = response.data;
+        if (response.status == 201) {
+          return data as boolean;
+        } else {
+          let msgErr = '';
+          if (Array.isArray(data.message)) {
+            msgErr = (data.message as string[]).join('\n, ');
+          } else {
+            msgErr = data.message;
+          }
+
+          const errorApi: ErrorApi = {
+            statusCode: data.statusCode,
+            message: msgErr,
+            error: data.error,
+          };
+          return errorApi;
+        }
+      })
+      .catch((err) => {
+        throw err;
+      });
+    return response;
+  }
 }
