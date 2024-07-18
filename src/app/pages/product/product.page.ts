@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from '@ionic/angular';
 import { Store } from '@ngxs/store';
+import { TranslateService } from '@ngx-translate/core';
 
 import { Product } from '../../models/product';
 import { ProductExtraOption } from '../../models/product-extra-option';
@@ -8,7 +9,6 @@ import { ToastService } from '../../services/toast.service';
 import { UserOrderService } from '../../services/user-order.service';
 import { GetProductById } from '../../state/products/products.actions';
 import { ProductsState } from '../../state/products/products.state';
-import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-product',
@@ -51,21 +51,7 @@ export class ProductPage {
   }
 
   calculateTotal() {
-    let total = this.product.price;
-
-    this.product.extras.forEach((extra) => {
-      extra.blocks.forEach((block) => {
-        if (block.options.length == 1 && block.options[0].activate) {
-          total += block.options[0].price;
-        } else if (block.options.length > 1) {
-          const option = block.options.find((op) => op.activate);
-          if (option) {
-            total += option.price;
-          }
-        }
-      });
-    });
-    this.total = +total.toFixed(2);
+    this.total = this.userOrderService.priceProduct(this.product);
   }
 
   refreshProduct($event: any) {

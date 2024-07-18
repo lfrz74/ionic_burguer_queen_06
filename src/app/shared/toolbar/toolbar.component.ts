@@ -11,6 +11,7 @@ import { LoginComponent } from '../login/login.component';
 import { KEY_TOKEN } from '../../constants/constants';
 import { ToastService } from '../../services/toast.service';
 import { CreateAccountComponent } from '../create-account/create-account.component';
+import { ListProductsOrderComponent } from '../list-products-order/list-products-order.component';
 
 @Component({
   selector: 'app-toolbar',
@@ -23,12 +24,14 @@ import { CreateAccountComponent } from '../create-account/create-account.compone
     TranslateModule,
     LoginComponent,
     CreateAccountComponent,
+    ListProductsOrderComponent,
   ],
 })
 export class ToolbarComponent implements OnInit {
   public showBack: boolean;
   public showInfoUser: boolean;
   public showCreateAccount: boolean;
+  public showOrder: boolean;
 
   constructor(
     private router: Router,
@@ -40,6 +43,8 @@ export class ToolbarComponent implements OnInit {
   ) {
     this.showBack = false;
     this.showInfoUser = false;
+    this.showCreateAccount = false;
+    this.showOrder = false;
   }
 
   ngOnInit() {
@@ -58,6 +63,8 @@ export class ToolbarComponent implements OnInit {
 
   back() {
     this.showInfoUser = false;
+    this.showCreateAccount = false;
+    this.showOrder = false;
   }
 
   async logout() {
@@ -80,7 +87,17 @@ export class ToolbarComponent implements OnInit {
     this.showCreateAccount = true;
   }
 
-  showLogin()
-{
-  this.showCreateAccount = false;
-}}
+  showLogin() {
+    this.showCreateAccount = false;
+  }
+
+  goToPay() {
+    this.back();
+    this.menuController.close('content');
+    this.navController.navigateForward('pay');
+  }
+
+  seeOrder() {
+    this.showOrder = true;
+  }
+}

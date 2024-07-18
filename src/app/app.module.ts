@@ -17,6 +17,7 @@ import { AuthState } from './state/auth/auth.state';
 import { LoginComponent } from './shared/login/login.component';
 import { UsersState } from './state/users/users.state';
 import { CreateAccountComponent } from './shared/create-account/create-account.component';
+import { ListProductsOrderComponent } from './shared/list-products-order/list-products-order.component';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -41,6 +42,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     FooterComponent,
     LoginComponent,
     CreateAccountComponent,
+    ListProductsOrderComponent,
   ],
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },

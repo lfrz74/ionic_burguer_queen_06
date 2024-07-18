@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Preferences } from '@capacitor/preferences';
-import { isEqual } from 'lodash-es';
+import { isEqual, remove } from 'lodash-es';
 
 import { Order } from '../models/order';
 import { KEY_ORDER } from '../constants/constants';
@@ -88,5 +88,68 @@ export class UserOrderService {
     delete user.password; // nuevo v
     this.order.user = user;
     await this.saveOrder();
+  }
+
+  async oneMoreProduct(product: Product) {
+    const productFound = this.searchProduct(product);
+
+    if (productFound) {
+      productFound.quantity++;
+    }
+
+    await this.saveOrder();
+  }
+
+  async oneLessProduct(product: Product) {
+    const productFound = this.searchProduct(product);
+
+    if (productFound) {
+      productFound.quantity--;
+
+      if (productFound.quantity <= 0) {
+        this.removeProduct(product);
+      }
+    }
+
+    await this.saveOrder();
+  }
+
+  async removeProduct(product: Product) {
+    remove(this.order.products, (p: any) => isEqual(p.product, product));
+    await this.saveOrder();
+  }
+
+  priceProduct(product: Product) {
+    let total = product.price;
+
+    if (product.extras) {
+      product.extras.forEach((extra) => {
+        extra.blocks.forEach((block) => {
+          if (block.options.length == 1 && block.options[0].activate) {
+            total += block.options[0].price;
+          } else if (block.options.length > 1) {
+            const option = block.options.find((op) => op.activate);
+            if (option) {
+              total += option.price;
+            }
+          }
+        });
+      });
+
+    }
+    return +total.toFixed(2);
+  }
+
+  totalPrice(qP: QuantityProduct) {
+    const total = this.priceProduct(qP.product) * qP.quantity;
+    return +total.toFixed(2);
+  }
+
+  totalOrder(): number {
+    let total = 0;
+    for (const qP of this.order.products) {
+      total += this.totalPrice(qP);
+    }
+    return total;
   }
 }
