@@ -18,6 +18,7 @@ import { LoginComponent } from './shared/login/login.component';
 import { UsersState } from './state/users/users.state';
 import { CreateAccountComponent } from './shared/create-account/create-account.component';
 import { ListProductsOrderComponent } from './shared/list-products-order/list-products-order.component';
+import { StripeState } from './state/stripe/stripe.state';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -37,7 +38,13 @@ export function HttpLoaderFactory(http: HttpClient) {
         deps: [HttpClient],
       },
     }),
-    NgxsModule.forRoot([CategoriesState, ProductsState, AuthState, UsersState]),
+    NgxsModule.forRoot([
+      CategoriesState,
+      ProductsState,
+      AuthState,
+      UsersState,
+      StripeState,
+    ]),
     ToolbarComponent,
     FooterComponent,
     LoginComponent,

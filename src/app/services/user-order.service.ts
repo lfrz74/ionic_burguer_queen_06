@@ -152,4 +152,9 @@ export class UserOrderService {
     }
     return total;
   }
+
+  getUser() {
+    return this.order.user;
+  }
+
 }

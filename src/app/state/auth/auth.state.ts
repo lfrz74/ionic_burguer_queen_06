@@ -4,7 +4,6 @@ import { Preferences } from '@capacitor/preferences';
 
 import { Login } from './auth.actions';
 import { AuthService } from './auth.service';
-import { TokenUser } from '../../models/token.user';
 import { KEY_TOKEN } from '../../constants/constants';
 import { ErrorApi } from '../../models/error-api';
 
