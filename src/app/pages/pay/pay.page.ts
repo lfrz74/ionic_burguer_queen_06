@@ -10,6 +10,7 @@ import { CreatePaymentIntent } from '../../models/create-payment-intent';
 import { CreatePaymentSheet } from '../../state/stripe/stripe.actions';
 import { StripeState } from '../../state/stripe/stripe.state';
 import { Payment } from '../../models/payment';
+import { ToastService } from '../../services/toast.service';
 
 @Component({
   selector: 'app-pay',
@@ -30,7 +31,8 @@ export class PayPage {
   constructor(
     public userOrderSrv: UserOrderService,
     private navController: NavController,
-    private store: Store
+    private store: Store,
+    private toastSrv: ToastService,
   ) {}
 
   ionViewWillEnter() {
@@ -90,7 +92,17 @@ export class PayPage {
       customer_id: 'cus_QX9rLUtNDpoFuB',
     };
 
-    this.store.dispatch(new CreatePaymentSheet({ paymentIntent }));
+    this.store.dispatch(new CreatePaymentSheet({ paymentIntent }))
+    .subscribe(
+      (err) => {
+        this.toastSrv.showToast(
+          'top',
+          err.stack,
+          'danger'
+        );
+      }
+    );
+;
   }
 
   detectChangesPayment() {
@@ -108,6 +120,9 @@ export class PayPage {
               console.log(err);
             });
         }
+      },
+      error: (err) => {
+        console.log(err);
       },
     });
     this.subscription.add(sub);
