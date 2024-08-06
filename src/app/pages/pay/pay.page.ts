@@ -32,7 +32,7 @@ export class PayPage {
     public userOrderSrv: UserOrderService,
     private navController: NavController,
     private store: Store,
-    private toastSrv: ToastService,
+    private toastSrv: ToastService
   ) {}
 
   ionViewWillEnter() {
@@ -91,18 +91,23 @@ export class PayPage {
       currency: 'USD',
       customer_id: 'cus_QX9rLUtNDpoFuB',
     };
-
-    this.store.dispatch(new CreatePaymentSheet({ paymentIntent }))
-    .subscribe(
-      (err) => {
-        this.toastSrv.showToast(
-          'top',
-          err.stack,
-          'danger'
-        );
-      }
-    );
-;
+    try {
+      this.store
+        .dispatch(new CreatePaymentSheet({ paymentIntent }))
+        .subscribe((err) => {
+          if (err.stripe.errorApi) {
+            this.toastSrv.showToast(
+              'top',
+              err.stripe.errorApi.statusCode +
+                ':  ' +
+                err.stripe.errorApi.message,
+              'danger'
+            );
+          }
+        });
+    } catch (error) {
+      this.toastSrv.showToast('top', error.stack, 'danger');
+    }
   }
 
   detectChangesPayment() {

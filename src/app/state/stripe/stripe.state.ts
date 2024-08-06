@@ -57,7 +57,18 @@ export class StripeState {
         }
       })
       .catch((err) => {
-        throw err;
+        if (err.stack) {
+          setState({
+            payment: null,
+            errorApi: {
+              statusCode: 400,
+              message: err.stack,
+              error: err.stack,
+            },
+          });
+        } else {
+          throw err;
+        }
       });
   }
 }
