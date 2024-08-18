@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { State, Action, StateContext, Selector } from '@ngxs/store';
 
 import { ProductsService } from './products.service';
-import { Product } from 'src/app/models/product';
+import { Product } from '../../models/product';
 import { GetProductById, GetProductsByCategory } from './products.actions';
 
 export class ProductsStateModel {

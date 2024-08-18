@@ -1,4 +1,4 @@
-import { Order } from 'src/app/models/order';
+import { Order } from '../../models/order';
 
 export class CreateOrder {
   static readonly type = '[Orders] Create order';

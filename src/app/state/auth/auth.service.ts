@@ -3,7 +3,7 @@ import { CapacitorHttp, HttpResponse } from '@capacitor/core';
 
 import { TokenUser } from '../../models/token.user';
 import { environment } from '../../../environments/environment';
-import { ErrorApi } from 'src/app/models/error-api';
+import { ErrorApi } from '../../models/error-api';
 
 @Injectable({
   providedIn: 'root',
