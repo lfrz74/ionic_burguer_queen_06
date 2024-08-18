@@ -3,14 +3,20 @@ import { NavController } from '@ionic/angular';
 import { PaymentSheetEventsEnum, Stripe } from '@capacitor-community/stripe';
 import { Select, Store } from '@ngxs/store';
 import { Observable, Subscription } from 'rxjs';
+import { TranslateService } from '@ngx-translate/core';
 
 import { UserOrderService } from '../../services/user-order.service';
 import { environment } from '../../../environments/environment';
 import { CreatePaymentIntent } from '../../models/create-payment-intent';
-import { CreatePaymentSheet } from '../../state/stripe/stripe.actions';
+import {
+  ClearPayment,
+  CreatePaymentSheet,
+} from '../../state/stripe/stripe.actions';
 import { StripeState } from '../../state/stripe/stripe.state';
 import { Payment } from '../../models/payment';
 import { ToastService } from '../../services/toast.service';
+import { CreateOrder } from '../../state/orders/orders.actions';
+import { OrdersState } from '../../state/orders/orders.state';
 
 @Component({
   selector: 'app-pay',
@@ -32,7 +38,8 @@ export class PayPage {
     public userOrderSrv: UserOrderService,
     private navController: NavController,
     private store: Store,
-    private toastSrv: ToastService
+    private toastSrv: ToastService,
+    private translate: TranslateService
   ) {}
 
   ionViewWillEnter() {
@@ -115,10 +122,22 @@ export class PayPage {
       next: () => {
         const paym = this.store.selectSnapshot(StripeState.payment);
         if (paym.payment) {
-          Stripe.createPaymentSheet(paym.payment);
+          Stripe.createPaymentSheet({
+            ...paym.payment,
+            merchantDisplayName: 'LFRZ Inc.',
+          });
           Stripe.presentPaymentSheet()
             .then((result) => {
               if (result.paymentResult == PaymentSheetEventsEnum.Completed) {
+                this.createOrder();
+              } else if (
+                result.paymentResult == PaymentSheetEventsEnum.Failed
+              ) {
+                this.toastSrv.showToast(
+                  'top',
+                  this.translate.instant('label.pay.fail'),
+                  'danger'
+                );
               }
             })
             .catch((err) => {
@@ -133,7 +152,42 @@ export class PayPage {
     this.subscription.add(sub);
   }
 
+  createOrder() {
+    const order = this.userOrderSrv.getOrder();
+    order.address = this.address;
+    //manejo exclusivo de errores parece v, pilas ojo
+    this.store.dispatch(new CreateOrder({ order })).subscribe({
+      next: () => {
+        const res = this.store.selectSnapshot(OrdersState.success);
+        if (res.success) {
+          this.toastSrv.showToast(
+            'top',
+            this.translate.instant('label.pay.success', {
+              address: this.address,
+            }),
+            'success'
+          );
+          this.userOrderSrv.resetOrder();
+          this.navController.navigateForward('categories');
+        } else {
+          this.toastSrv.showToast(
+            'top',
+            this.translate.instant('label.pay.fail') +
+              res.errorApi.statusCode +
+              ':  ' +
+              res.errorApi.message,
+            'danger'
+          );
+        }
+      },
+      error: (err) => {
+        this.toastSrv.showToast('top', err.stack, 'danger');
+      },
+    });
+  }
+
   ionViewWillLeave() {
+    this.store.dispatch(new ClearPayment());
     this.subscription.unsubscribe();
   }
 }

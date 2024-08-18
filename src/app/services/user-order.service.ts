@@ -157,4 +157,7 @@ export class UserOrderService {
     return this.order.user;
   }
 
+  getOrder() {
+    return this.order;
+  }
 }

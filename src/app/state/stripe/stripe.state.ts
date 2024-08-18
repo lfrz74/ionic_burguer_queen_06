@@ -2,9 +2,9 @@ import { Injectable } from '@angular/core';
 import { State, Action, StateContext, Selector } from '@ngxs/store';
 
 import { Payment } from '../../models/payment';
-import { CreatePaymentSheet } from './stripe.actions';
+import { ClearPayment, CreatePaymentSheet } from './stripe.actions';
 import { StripeService } from './stripe.service';
-import { ErrorApi } from 'src/app/models/error-api';
+import { ErrorApi } from '../../models/error-api';
 
 export class StripeStateModel {
   payment: Payment;
@@ -33,7 +33,7 @@ export class StripeState {
 
   constructor(private stripeService: StripeService) {}
   @Action(CreatePaymentSheet)
-  async add(
+  async createPaymentS(
     { setState }: StateContext<StripeStateModel>,
     { payload }: CreatePaymentSheet
   ) {
@@ -70,5 +70,13 @@ export class StripeState {
           throw err;
         }
       });
+  }
+
+  @Action(ClearPayment)
+  async clearPayment({ setState }: StateContext<StripeStateModel>) {
+    setState({
+      payment: null,
+      errorApi: null,
+    });
   }
 }

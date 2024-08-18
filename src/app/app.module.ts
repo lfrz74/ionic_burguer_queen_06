@@ -19,6 +19,7 @@ import { UsersState } from './state/users/users.state';
 import { CreateAccountComponent } from './shared/create-account/create-account.component';
 import { ListProductsOrderComponent } from './shared/list-products-order/list-products-order.component';
 import { StripeState } from './state/stripe/stripe.state';
+import { OrdersState } from './state/orders/orders.state';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -44,6 +45,7 @@ export function HttpLoaderFactory(http: HttpClient) {
       AuthState,
       UsersState,
       StripeState,
+      OrdersState
     ]),
     ToolbarComponent,
     FooterComponent,
